@@ -1,4 +1,4 @@
-Intro, Workflow (add, commit, restore, logs)
+(Intro, Workflow (add, commit, restore, logs)
 
 yum install git -y : Command to install git
 git init : to install empty .git repo
