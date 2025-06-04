@@ -147,6 +147,39 @@ in given time if we have any changes on code it will generate a build
 create a ci job -- > Build Triggers -- > poll scm -- > * * * * * -- > save
 commit the changes in GitHub then wait for 1 min.
 
+ Format of Cron in Jenkins:
+MIN  HOUR  DOM  MON  DOW
+
+Field	         Meaning	          Example:
+MIN	           Minute             (0 - 59)   	45
+HOUR	         Hour               (0 - 23)	  15 = 3 PM
+DOM	           Day of Month       (1 - 31)	  10
+MON	           Month              (1 - 12)	   4 = April
+DOW	           Day of Week        (0 - 7)	     4 = Thursday (0 or 7 is Sunday)
+
+Your Cron Expression:
+45 15 10 4 4
+
+ Interpreted As:
+At 3:45 PM on the 10th of April AND only if it's a Thursday.
+
+✅ Important Note:
+If both Day of Month (10) and Day of Week (Thursday) are specified, both must match.
+
+So this cron job runs only once a year, when:
+It's April 10th
+AND it's a Thursday
+At 3:45 PM
+
+Common Jenkins Cron Examples:
+Schedule	                             Cron	                  Description
+Every day at 2 AM	                     0 2 * * *	              Run daily at 2:00 AM
+Every 15 minutes	                     H/15 * * * *	            Run every 15 mins (H spreads load)
+Every Sunday at 5 PM	                 0 17 * * 0	              Run every Sunday at 5:00 PM
+Every 1st of month at midnight	       0 0 1 * *	              Run on 1st of each month
+Weekdays at 6 PM	                     0 18 * * 1-5	            Run Mon-Fri at 6 PM
+
+
 1. in pollscm, we need to wait for the time we set.
 2. we will get the last commit only.
 
