@@ -329,7 +329,7 @@ pipeline {
 }
 
 
-PAAC SINGLE SHELL:
+PAAC - SINGLE SHELL:
 
 pipeline {
     agent any
@@ -347,7 +347,27 @@ pipeline {
         }
     }
 }
+===================================================================================================================================================
 
+pipeline {
+    agent any
+
+    stages {
+        stage('one') {
+            steps {
+                // Step 1: Pull code from GitHub
+                git 'https://github.com/Venkatareddy1714/jenkins-java-project123.git'
+
+                // Step 2: Run all Maven commands inside one shell block
+                sh '''
+                mvn compile
+                mvn test
+                mvn package
+                '''
+            }
+        }
+    }
+}
 
 ---------------------------------------------------------------------
 
