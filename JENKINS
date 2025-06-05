@@ -705,11 +705,64 @@ SETUP:
 
 5. ./bin/startup.sh
 6. login: public-ip:8080 -- > manager app -- > username: tomcat passowrd:venkat123 -- > enter
-
+===================================================================================================================================
+Here will start for Day: 06/06/2025
 DOWNLOAD THE PLUGIN: Deploy to container
 ADD CREDS:
 Manage jenkins -- > credentials -- > global -- > add credentials -- > kind: username with password -- > user: tomcat password: venkat123 -- > save
 
+Install and use Maven via Jenkins Tool Configuration
+Go to Jenkins Dashboard → Manage Jenkins → Global Tool Configuration
+Under Maven, click Add Maven
+Give it a name (e.g., maven-3.9.6)
+Select "Install automatically" and choose version 3.9.x
+In your Jenkins pipeline, add this block:
+
+Pipeline:
+
+pipeline {
+    agent {
+        label 'node1'
+    }
+    tools {
+    maven 'maven-3.9.6'  // the same name you gave in the UI
+    }
+    stages {
+        stage('checkout') {
+            steps {
+                git 'https://github.com/Venkatareddy1714/jenkins-java-project123.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage('test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('artifact') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('deploy') {
+            steps {
+                deploy adapters: [
+                    tomcat9(
+                        credentialsId: '376f31d8-ded4-4878-834f-2dd60664d96f',
+                        path: '',
+                        url: 'http://13.233.98.71:8080/'
+                    )
+                ],
+                contextPath: 'netflix',
+                war: 'target/*.war'
+            }
+        }
+    }
+}
 
 TROUBLESHOOT SCENARIOS:
 1. SONARQUBE:
